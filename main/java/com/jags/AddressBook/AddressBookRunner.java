@@ -20,12 +20,13 @@ public class AddressBookRunner {
 
     public void run(){
         int choice = menuHandler.printMenuAndReadChoice();
-        while(choice > 0 && choice <= 6){
+        while(choice > 0 && choice <= 5){
 
             switch (choice){
                 case 1:
                     Address address = addressHandler.read();
                     addressList.add(address);
+                    saveAddrsToFile(address);
                     break;
                 case 2:
                     String searchString = addressHandler.readSearchTerm();
@@ -54,12 +55,6 @@ public class AddressBookRunner {
                     break;
                 case 5:
                     displayAllAddrs();
-                    break;
-                case 6:
-                    System.out.println("first step in writing");
-                    Address saveAddress = new Address();
-                    System.out.println("came into case 6");
-                    saveAddrsToFile(saveAddress);
                     break;
                 default:
                     break;
@@ -109,12 +104,13 @@ public class AddressBookRunner {
 
     private void saveAddrsToFile(Address saveAddr){
         try {
-            FileOutputStream fileOutputStream = new FileOutputStream("/data/Address.txt");
+
+            String fileName = "address.dat";
+            FileOutputStream fileOutputStream = new FileOutputStream(System.getProperty("java.io.tmpdir") + fileName);
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
             objectOutputStream.writeObject(saveAddr);
             objectOutputStream.close();
             fileOutputStream.close();
-            System.out.println("File written and closed");
         }catch (IOException i){
             i.printStackTrace();
         }
